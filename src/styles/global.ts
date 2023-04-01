@@ -1,6 +1,11 @@
 import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
+  :root {
+    --red: #F15156;
+    --white:  #FFFFFF;
+  }
+
   * {
     margin: 0;
     padding: 0;
@@ -8,7 +13,7 @@ export default createGlobalStyle`
   }
 
   body {
-    color: #FFFFFF;
+    color: var(--white);
   }
 
   button {

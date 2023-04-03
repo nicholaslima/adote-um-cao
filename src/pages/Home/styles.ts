@@ -37,3 +37,88 @@ export const Main = styled.div`
     width: 592px;
   }
 `
+export const Footer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 80px;
+  .title {
+    font-size: 24px;
+    line-height: 600;
+    line-height: 34px;
+    width: 407px;
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    p {
+      font-size: 1rem;
+      font-weight: 400;
+      margin-right: 23px;
+    }
+
+    .estados {
+      border-radius: 20px;
+      border: 1px solid var(--white);
+      background-color: var(--red);
+      padding: 21px 12px;
+      margin-right: 10px;
+
+      display: flex;
+      align-items: center;
+
+      select {
+        background-color: var(--red);
+        border: 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--white);
+        appearance: none;
+        margin-right: 5px;
+      }
+
+      img {
+        height: 7px;
+      }
+    }
+
+    .cidades {
+      background-color: var(--red-500);
+      width: 280px;
+      height: 72px;
+      border-radius: 20px;
+      border: 0;
+      margin-right: 32px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      select {
+        background-color: var(--red-500);
+        border: 0;
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--white);
+        appearance: none;
+        margin-right: 5px;
+      }
+
+      img {
+        height: 7px;
+      }
+    }
+
+    .buscar {
+      background-color: var(--yellow);
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      border: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+`

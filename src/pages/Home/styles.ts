@@ -85,8 +85,8 @@ export const Footer = styled.div`
 
     .cidades {
       background-color: var(--red-500);
-      width: 280px;
       height: 72px;
+      width: 280px;
       border-radius: 20px;
       border: 0;
       margin-right: 32px;
@@ -103,6 +103,7 @@ export const Footer = styled.div`
         color: var(--white);
         appearance: none;
         margin-right: 5px;
+        width: 75%;
       }
 
       img {

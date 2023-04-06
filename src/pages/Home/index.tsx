@@ -15,6 +15,9 @@ type StateType = {
 export function Home() {
   const { handleSubmit, register } = useForm()
   const [states, setStates] = useState<StateType[]>([])
+  const [citys, setCitys] = useState<string[]>([])
+  const [state, setState] = useState('')
+  const [city, setCity] = useState('')
 
   useEffect(() => {
     api.get('/location/states').then((response) => {
@@ -22,16 +25,25 @@ export function Home() {
     })
   }, [])
 
+  useEffect(() => {
+    if (state) {
+      api.get(`/location/citys/${state}`).then((response) => {
+        const citysName = response.data.citys.map((city: any) => city.name)
+        setCitys(citysName)
+      })
+    }
+  }, [state])
+
   function handleSearchPets(data: any) {
     console.log(data)
   }
 
-  function handleChangeState() {
-    // TO DO
+  function handleChangeState(e: any) {
+    setState(e.target.value)
   }
 
-  function handleChangeCity() {
-    // TO DO
+  function handleChangeCity(e: any) {
+    setCity(e.target.value)
   }
 
   return (
@@ -53,7 +65,11 @@ export function Home() {
           <form onSubmit={handleSubmit(handleSearchPets)}>
             <p>Busque um amigo :</p>
             <div className="estados">
-              <select {...register('state')}>
+              <select
+                {...register('state')}
+                onChange={(e) => handleChangeState(e)}
+              >
+                <option value=""></option>
                 {states.map((state) => (
                   <option key={state.sigla} value={state.sigla}>
                     {state.sigla}
@@ -64,10 +80,15 @@ export function Home() {
             </div>
 
             <div className="cidades">
-              <select {...register('city')}>
-                <option value="recife">Recife</option>
-                <option value=""></option>
-                <option value=""></option>
+              <select
+                {...register('city')}
+                onChange={(e) => handleChangeCity(e)}
+              >
+                {citys.map((city, index) => (
+                  <option key={index} value={city}>
+                    {city}
+                  </option>
+                ))}
               </select>
               <img src={arrowDown} alt="icone flexa para abrir o select" />
             </div>

@@ -35,7 +35,9 @@ export function Home() {
   }, [state])
 
   function handleSearchPets(data: any) {
-    console.log(data)
+    api.get(`/pets/${city}`).then((response) => {
+      console.log(response.data)
+    })
   }
 
   function handleChangeState(e: any) {

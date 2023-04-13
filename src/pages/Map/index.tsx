@@ -12,11 +12,36 @@ import {
   HeaderSelect,
   Display,
 } from './styles'
+import { useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { api } from '@/api/api'
+
+interface PetType {
+  id: string
+  name: string
+  description: string
+  age: 'cub' | 'adolescent' | 'elderly'
+  energy: 'low' | 'medium' | 'high'
+  independence: boolean
+  size: 'small' | 'medium' | 'big'
+  type: 'dog' | 'cat'
+  photo: string
+  photo_url: string
+  orgId: string
+}
 
 export function Map() {
-  function handleFilterByPetType() {
-    // TO DO
-  }
+  const [pets, setPets] = useState<PetType[]>([])
+  const location = useLocation()
+  const city = location.state.city
+
+  useEffect(() => {
+    if (location) {
+      api.get(`/pets/${city}`).then((response) => setPets(response.data.pets))
+    }
+  }, [location])
+
+  function handleFilterByPetType() {}
 
   return (
     <Container>
@@ -37,14 +62,14 @@ export function Map() {
           </SelectWrapper>
         </Header>
         <Display>
-          <Card path={dog} type="dog" name="Alfredo" />
-          <Card path={dog} type="cat" name="Tobia" />
-          <Card path={dog} type="dog" name="Alfredo" />
-          <Card path={dog} type="cat" name="Tobia" />
-          <Card path={dog} type="dog" name="Alfredo" />
-          <Card path={dog} type="cat" name="Tobia" />
-          <Card path={dog} type="dog" name="Alfredo" />
-          <Card path={dog} type="cat" name="Tobia" />
+          {pets.map((pet) => (
+            <Card
+              key={pet.id}
+              path={pet.photo_url}
+              type={pet.type}
+              name={pet.name}
+            />
+          ))}
         </Display>
       </Content>
     </Container>

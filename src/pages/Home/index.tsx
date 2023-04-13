@@ -6,6 +6,7 @@ import arrowDown from '../../assets/icons/chevron-bottom.svg'
 import { useForm } from 'react-hook-form'
 import { api } from '@/api/api'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type StateType = {
   sigla: string
@@ -18,6 +19,7 @@ export function Home() {
   const [citys, setCitys] = useState<string[]>([])
   const [state, setState] = useState('')
   const [city, setCity] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     api.get('/location/states').then((response) => {
@@ -35,8 +37,10 @@ export function Home() {
   }, [state])
 
   function handleSearchPets(data: any) {
-    api.get(`/pets/${city}`).then((response) => {
-      console.log(response.data)
+    navigate('/map', {
+      state: {
+        city,
+      },
     })
   }
 

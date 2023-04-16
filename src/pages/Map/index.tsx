@@ -15,24 +15,11 @@ import {
 import { useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { api } from '@/api/api'
-
-interface PetType {
-  id: string
-  name: string
-  description: string
-  age: 'cub' | 'adolescent' | 'elderly'
-  energy: 'low' | 'medium' | 'high'
-  independence: boolean
-  size: 'small' | 'medium' | 'big'
-  type: 'dog' | 'cat'
-  photo: string
-  photo_url: string
-  orgId: string
-}
+import { useContextPets } from '@/contexts'
 
 export function Map() {
-  const [pets, setPets] = useState<PetType[]>([])
   const [filter, setFilter] = useState('')
+  const { pets, insertPets } = useContextPets()
   const location = useLocation()
   const city = location.state.city
 
@@ -45,7 +32,9 @@ export function Map() {
 
   useEffect(() => {
     if (location) {
-      api.get(`/pets/${city}`).then((response) => setPets(response.data.pets))
+      api
+        .get(`/pets/${city}`)
+        .then((response) => insertPets(response.data.pets))
     }
   }, [location])
 

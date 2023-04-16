@@ -13,6 +13,7 @@ import {
 } from './styles'
 import { api } from '@/api/api'
 import { useState } from 'react'
+import { useContextPets } from '@/contexts'
 
 const ageOptions = [
   {
@@ -87,6 +88,7 @@ interface FilterType {
 export function Aside() {
   const [filters, setFilters] = useState<FilterType[]>([])
   const [city, setCity] = useState('')
+  const { insertPets } = useContextPets()
 
   async function handleSearchPets() {
     const ObjectFilters = filters.reduce(
@@ -96,7 +98,7 @@ export function Aside() {
 
     await api
       .get(`/pets/${city}`, { params: ObjectFilters })
-      .then((response) => console.log(response.data))
+      .then((response) => insertPets(response.data.pets))
   }
 
   function handleChangeSearchFilters(e: any) {
@@ -164,7 +166,7 @@ export function Aside() {
           />
 
           <Select
-            name="independency"
+            name="independence"
             label="Nível de independência"
             options={independencyOptions}
             onChange={handleChangeSearchFilters}

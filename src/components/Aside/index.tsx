@@ -11,6 +11,8 @@ import {
   ContentHeader,
   ContentFilters,
 } from './styles'
+import { api } from '@/api/api'
+import { useState } from 'react'
 
 const ageOptions = [
   {
@@ -77,13 +79,46 @@ const independencyOptions = [
   },
 ]
 
+interface FilterType {
+  name: string
+  value: string
+}
+
 export function Aside() {
-  function handleSearchPets() {
-    // TO DO
+  const [filters, setFilters] = useState<FilterType[]>([])
+  const [city, setCity] = useState('')
+
+  async function handleSearchPets() {
+    const ObjectFilters = filters.reduce(
+      (obj, item) => ({ ...obj, [item.name]: item.value }),
+      {},
+    )
+
+    await api
+      .get(`/pets/${city}`, { params: ObjectFilters })
+      .then((response) => console.log(response.data))
   }
 
-  function handleChangeSearchFilters() {
-    // TO DO
+  function handleChangeSearchFilters(e: any) {
+    const value = e.target.value
+    const name = e.target.name
+
+    const newFilter = {
+      name,
+      value,
+    }
+
+    const FilterExistIndex = filters.findIndex(
+      (item) => newFilter.name === item.name,
+    )
+
+    if (FilterExistIndex === -1) {
+      setFilters((OldFilters) => [...OldFilters, newFilter])
+    } else {
+      const newList = filters
+      newList[FilterExistIndex] = newFilter
+      setFilters(newList)
+    }
   }
 
   return (
@@ -92,8 +127,13 @@ export function Aside() {
         <div>
           <img src={logo} alt="" />
           <HeaderInput>
-            <input type="text" placeholder="Insira uma cidade" />
-            <button>
+            <input
+              type="text"
+              placeholder="Insira uma cidade"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+            <button onClick={handleSearchPets}>
               <img src={search} alt="ícone de lupa" />
             </button>
           </HeaderInput>
@@ -102,20 +142,32 @@ export function Aside() {
       <AsideContent>
         <ContentHeader>Filtros</ContentHeader>
         <ContentFilters>
-          <Select name="age" label="Idade" options={ageOptions} />
+          <Select
+            name="age"
+            onChange={handleChangeSearchFilters}
+            label="Idade"
+            options={ageOptions}
+          />
 
           <Select
             name="energy"
             label="Nível de energia"
             options={energyOptions}
+            onChange={handleChangeSearchFilters}
           />
 
-          <Select name="size" label="Porte do animal" options={sizeOptions} />
+          <Select
+            onChange={handleChangeSearchFilters}
+            name="size"
+            label="Porte do animal"
+            options={sizeOptions}
+          />
 
           <Select
             name="independency"
             label="Nível de independência"
             options={independencyOptions}
+            onChange={handleChangeSearchFilters}
           />
         </ContentFilters>
       </AsideContent>

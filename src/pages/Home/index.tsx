@@ -19,6 +19,7 @@ export function Home() {
   const [citys, setCitys] = useState<string[]>([])
   const [state, setState] = useState('')
   const [city, setCity] = useState('')
+
   const navigate = useNavigate()
 
   useEffect(() => {

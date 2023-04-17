@@ -21,7 +21,7 @@ export function Map() {
   const [filter, setFilter] = useState('')
   const { pets, insertPets } = useContextPets()
   const location = useLocation()
-  const city = location.state.city
+  const city = location.state?.city
 
   let petsFiltered = pets.filter((pet) => {
     if (filter === '') {

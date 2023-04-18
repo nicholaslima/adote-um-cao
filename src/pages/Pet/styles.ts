@@ -44,5 +44,32 @@ export const Container = styled.div`
     margin: 40px auto;
     margin-bottom: 32px;
     border-radius: 20px;
+    background-color: var(--white);
+  }
+`
+
+export const DogImages = styled.div`
+  .mainImage {
+    width: 100%;
+    height: 336px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    div {
+      display: grid;
+      grid-template-columns: repeat(6, 80px);
+      grid-gap: 1rem;
+
+      img {
+        border-radius: 15px;
+        height: 80px;
+        width: 80px;
+      }
+    }
   }
 `

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   background-color: var(--background);
 
@@ -48,6 +48,10 @@ export const Container = styled.div`
   }
 `
 
+export const ContainerDogDetails = styled.div`
+  padding: 72px;
+`
+
 export const DogImages = styled.div`
   .mainImage {
     width: 100%;
@@ -69,6 +73,45 @@ export const DogImages = styled.div`
         border-radius: 15px;
         height: 80px;
         width: 80px;
+      }
+    }
+  }
+`
+export const DescDog = styled.div`
+  margin-top: 30px;
+  .name {
+    font-weight: 800;
+    font-size: 54px;
+    color: var(--blue);
+    margin-bottom: 26px;
+  }
+  .description {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--blue);
+  }
+  .list-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 36px;
+    .card-detail {
+      border: 2px solid var(--gray-light);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      padding: 26px;
+      gap: 14px;
+      svg {
+        color: var(--blue);
+        height: 25px;
+        width: 25px;
+      }
+      p {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--blue);
       }
     }
   }

@@ -1,10 +1,12 @@
 import {
+  ButtonContact,
   Container,
   ContainerDogDetails,
   DescDog,
   DogImages,
   Location,
   Map,
+  Requirements,
 } from './styles'
 import Logo from '../../assets/icons/logo.svg'
 import { AiOutlineArrowLeft, AiOutlineExclamationCircle } from 'react-icons/ai'
@@ -96,32 +98,32 @@ export function Pet() {
             </div>
           </Location>
 
-          <div className="requirements">
+          <Requirements>
             <h1>Requesitos para adoção</h1>
             <div>
-              <div>
+              <div className="item-requirements">
                 <AiOutlineExclamationCircle />
                 <p>Local grande para o animal correr e brincar.</p>
               </div>
-              <div>
+              <div className="item-requirements">
                 <AiOutlineExclamationCircle />
                 <p>Proibido apartamento</p>
               </div>
-              <div>
+              <div className="item-requirements">
                 <AiOutlineExclamationCircle />
                 <p>Ambiente frio, pois possui muito pelo.</p>
               </div>
-              <div>
+              <div className="item-requirements">
                 <AiOutlineExclamationCircle />
                 <p>Cão com intolerância a lactose.</p>
               </div>
             </div>
-          </div>
+          </Requirements>
 
-          <button>
+          <ButtonContact>
             <RiWhatsappLine />
             <p>Entrar em contato</p>
-          </button>
+          </ButtonContact>
         </ContainerDogDetails>
       </main>
     </Container>

@@ -215,3 +215,66 @@ export const Location = styled.div`
     }
   }
 `
+export const Requirements = styled.div`
+  margin-top: 55px;
+  h1 {
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--blue);
+    margin-bottom: 40px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid var(--gray-light);
+    padding-bottom: 50px;
+    .item-requirements {
+      border: 1px solid var(--red);
+      background: linear-gradient(
+        129.72deg,
+        rgba(247, 95, 96, 0.1) 16.45%,
+        rgba(241, 81, 86, 0) 67.3%
+      );
+
+      display: flex;
+      flex-direction: row;
+      border-radius: 10px;
+      padding: 15px 40px;
+      gap: 14px;
+      align-items: center;
+      svg {
+        color: var(--red);
+        width: 20px;
+        height: 20px;
+      }
+      p {
+        color: var(--red);
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+  }
+`
+export const ButtonContact = styled.button`
+  background-color: var(--green);
+  border-radius: 20px;
+  width: 100%;
+  padding: 20px 0 20px 0;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  svg {
+    color: var(--white);
+    width: 20px;
+    height: 20px;
+  }
+  p {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--white);
+  }
+`

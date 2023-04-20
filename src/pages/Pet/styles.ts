@@ -97,7 +97,7 @@ export const DescDog = styled.div`
     justify-content: space-between;
     margin-top: 36px;
     .card-detail {
-      border: 2px solid var(--gray-light);
+      border: 1px solid var(--gray-light);
       border-radius: 20px;
       display: flex;
       flex-direction: column;
@@ -114,5 +114,47 @@ export const DescDog = styled.div`
         color: var(--blue);
       }
     }
+  }
+`
+export const Map = styled.div`
+  width: 100%;
+  margin-top: 30px;
+  background-color: var(--blue);
+  border-radius: 20px;
+  .map {
+    width: 100%;
+    height: 291px;
+    background-color: var(--white);
+    border: 1px solid var(--gray-light);
+    border-radius: 20px;
+    position: relative;
+    .arrow-map {
+      background-color: var(--blue);
+      padding: 15px 16px;
+      border-radius: 20px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      svg {
+        position: absolute;
+        top: 87px;
+        left: 50%;
+        height: 70px;
+        transform: translate(-50%, -50%);
+        width: 70px;
+        color: var(--blue);
+      }
+    }
+  }
+  .footer-map {
+    color: var(--yellow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 700;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
   }
 `

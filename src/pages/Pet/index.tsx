@@ -1,4 +1,10 @@
-import { Container, ContainerDogDetails, DescDog, DogImages } from './styles'
+import {
+  Container,
+  ContainerDogDetails,
+  DescDog,
+  DogImages,
+  Map,
+} from './styles'
 import Logo from '../../assets/icons/logo.svg'
 import { AiOutlineArrowLeft, AiOutlineExclamationCircle } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
@@ -8,6 +14,7 @@ import { RiWhatsappFill, RiWhatsappLine } from 'react-icons/ri'
 import { SlEnergy } from 'react-icons/sl'
 import { TbMaximize } from 'react-icons/tb'
 import { FaEllipsisH } from 'react-icons/fa'
+import { MdOutlineArrowDropDown } from 'react-icons/md'
 
 export function Pet() {
   const navigate = useNavigate()
@@ -62,14 +69,15 @@ export function Pet() {
             </div>
           </DescDog>
 
-          <div className="map">
+          <Map>
             <div className="map">
               <span className="arrow-map">
                 <img src={Logo} alt="" />
+                <MdOutlineArrowDropDown />
               </span>
             </div>
             <div className="footer-map">Ver rotas no Google Maps</div>
-          </div>
+          </Map>
 
           <div className="location">
             <div>

@@ -9,7 +9,7 @@ export default createGlobalStyle`
     --background:#FDECED;
     --blue:#0D3B66;
     --gray:#8FA7B2;
-    --gray-light: #E6F7FB;
+    --gray-light: #DDE3F0;
   }
 
   * {

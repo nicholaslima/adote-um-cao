@@ -10,6 +10,10 @@ export default createGlobalStyle`
     --blue:#0D3B66;
     --gray:#8FA7B2;
     --gray-light: #DDE3F0;
+    --gray-light-3: rgba(13,59,102,0.05);
+    --gray-light-2: #E6F7FB;
+    --gray-blue: #D3E2E5;
+    --orange: #F27006;
   }
 
   * {

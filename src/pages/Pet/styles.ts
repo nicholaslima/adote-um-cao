@@ -158,3 +158,60 @@ export const Map = styled.div`
     width: 100%;
   }
 `
+export const Location = styled.div`
+  display: flex;
+  gap: 18px;
+  margin-top: 34px;
+  padding-bottom: 50px;
+  padding-top: 50px;
+  border-bottom: 1px solid var(--gray-blue);
+  border-top: 1px solid var(--gray-blue);
+  .orange-square {
+    background-color: var(--orange);
+    padding: 18px;
+    border-radius: 15px;
+    height: 64px;
+    width: 64px;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    .address {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      h1 {
+        font-weight: 700;
+        font-size: 30px;
+        color: var(--blue);
+      }
+      p {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--blue);
+      }
+    }
+
+    .contact {
+      background-color: var(--gray-light-3);
+      width: 217px;
+      height: 54px;
+      border-radius: 17px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      svg {
+        height: 24px;
+        width: 24px;
+        color: var(--blue);
+      }
+      p {
+        font-weight: 700;
+        font-size: 18px;
+        color: var(--blue);
+      }
+    }
+  }
+`

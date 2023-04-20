@@ -3,6 +3,7 @@ import {
   ContainerDogDetails,
   DescDog,
   DogImages,
+  Location,
   Map,
 } from './styles'
 import Logo from '../../assets/icons/logo.svg'
@@ -79,21 +80,21 @@ export function Pet() {
             <div className="footer-map">Ver rotas no Google Maps</div>
           </Map>
 
-          <div className="location">
+          <Location>
+            <div className="orange-square">
+              <img src={Logo} alt="" />
+            </div>
             <div>
-              <div className="orange-square">
-                <img src={Logo} alt="" />
-              </div>
-              <div>
+              <div className="address">
                 <h1>Seu Cãopanheiro</h1>
                 <p>Rua do meio, 123 , Boa viagem, Recife - PE </p>
               </div>
+              <div className="contact">
+                <RiWhatsappFill />
+                <p className="phone">81 1234.4567</p>
+              </div>
             </div>
-            <div>
-              <RiWhatsappFill />
-              <p className="phone">81 1234.4567</p>
-            </div>
-          </div>
+          </Location>
 
           <div className="requirements">
             <h1>Requesitos para adoção</h1>

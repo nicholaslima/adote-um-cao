@@ -10,17 +10,20 @@ import {
 } from './styles'
 import Logo from '../../assets/icons/logo.svg'
 import { AiOutlineArrowLeft, AiOutlineExclamationCircle } from 'react-icons/ai'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
-import Dog2 from '../../assets/images/dog2.png'
 import { RiWhatsappFill, RiWhatsappLine } from 'react-icons/ri'
 import { SlEnergy } from 'react-icons/sl'
 import { TbMaximize } from 'react-icons/tb'
 import { FaEllipsisH } from 'react-icons/fa'
 import { MdOutlineArrowDropDown } from 'react-icons/md'
 import { useEffect, useState } from 'react'
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import L from 'leaflet'
 import { api } from '@/api/api'
+import iconMap from '../../assets/icons/icon.svg'
 import { PetType } from '@/contexts'
+import 'leaflet/dist/leaflet.css'
 
 interface OrgType {
   id: string
@@ -36,12 +39,27 @@ interface photoPetType {
   petId: string
   photo_url: string
 }
+
+interface coordinatesType {
+  latitude: number
+  longitude: number
+}
+interface adoptionRequirementsType {
+  id: string
+  petId: string
+  title: string
+}
 export function Pet() {
   const [pet, setPet] = useState<PetType>()
   const [org, setOrg] = useState<OrgType>()
   const [photos, setPhotos] = useState<photoPetType[]>()
+  const [coordinates, setCoordinates] = useState<coordinatesType>(
+    {} as coordinatesType,
+  )
+  const [requirements, setRequirements] = useState<adoptionRequirementsType[]>()
   const navigate = useNavigate()
   const location = useLocation()
+
   const petId = location.state?.petId
 
   function handleGoBack() {
@@ -61,6 +79,31 @@ export function Pet() {
     })
   }, [petId])
 
+  useEffect(() => {
+    api.get(`/pets/adoption-requirements/${petId}`).then((response) => {
+      setRequirements(response.data.adoption_requirements)
+    })
+  }, [petId])
+
+  useEffect(() => {
+    api.get(`/location/coordinates/${org?.cep}`).then((response) => {
+      const coordinatesInNumber = {
+        latitude: Number(response.data.coordinates.latitude),
+        longitude: Number(response.data.coordinates.longitude),
+      }
+      setCoordinates(coordinatesInNumber)
+    })
+  }, [org])
+
+  const myIcon = L.icon({
+    iconUrl: iconMap,
+    iconSize: [38, 95],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94],
+  })
+
   return (
     <Container>
       <aside>
@@ -72,11 +115,29 @@ export function Pet() {
       <h1 className="title">Seu novo amigo</h1>
       <main>
         <DogImages>
-          <img className="mainImage" src={pet?.photo_url} alt="" />
+          <div
+            className="mainImage"
+            style={{
+              backgroundImage: `url(${pet?.photo_url})`,
+              backgroundSize: 'cover',
+              height: '336px',
+              width: '100%',
+              borderRadius: '20px 20px 0 0',
+            }}
+          />
           <div>
             <div>
               {photos?.map((photo) => (
-                <img key={photo.id} src={photo.photo_url} alt="dog image" />
+                <div
+                  key={photo.id}
+                  style={{
+                    backgroundImage: `url(${photo.photo_url})`,
+                    backgroundSize: 'cover',
+                    height: '80px',
+                    width: '80px',
+                    borderRadius: '15px',
+                  }}
+                />
               ))}
             </div>
           </div>
@@ -100,17 +161,35 @@ export function Pet() {
               </div>
             </div>
           </DescDog>
+          {coordinates.latitude && (
+            <Map>
+              <MapContainer
+                center={[coordinates.latitude, coordinates.longitude]}
+                zoom={13}
+                scrollWheelZoom={false}
+                className="map"
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker
+                  icon={myIcon}
+                  position={[coordinates.latitude, coordinates.longitude]}
+                >
+                  <Popup>Localização de seu pet.</Popup>
+                </Marker>
+              </MapContainer>
 
-          <Map>
-            <div className="map">
-              <span className="arrow-map">
-                <img src={Logo} alt="" />
-                <MdOutlineArrowDropDown />
-              </span>
-            </div>
-            <div className="footer-map">Ver rotas no Google Maps</div>
-          </Map>
-
+              <Link
+                to={`https://www.google.com/maps/@${coordinates.latitude},${coordinates.longitude},15z`}
+                target="_blank"
+                className="footer-map"
+              >
+                Ver rotas no Google Maps
+              </Link>
+            </Map>
+          )}
           <Location>
             <div className="orange-square">
               <img src={Logo} alt="" />
@@ -130,22 +209,12 @@ export function Pet() {
           <Requirements>
             <h1>Requesitos para adoção</h1>
             <div>
-              <div className="item-requirements">
-                <AiOutlineExclamationCircle />
-                <p>Local grande para o animal correr e brincar.</p>
-              </div>
-              <div className="item-requirements">
-                <AiOutlineExclamationCircle />
-                <p>Proibido apartamento</p>
-              </div>
-              <div className="item-requirements">
-                <AiOutlineExclamationCircle />
-                <p>Ambiente frio, pois possui muito pelo.</p>
-              </div>
-              <div className="item-requirements">
-                <AiOutlineExclamationCircle />
-                <p>Cão com intolerância a lactose.</p>
-              </div>
+              {requirements?.map((requirement) => (
+                <div key={requirement.id} className="item-requirements">
+                  <AiOutlineExclamationCircle />
+                  <p>{requirement.title}.</p>
+                </div>
+              ))}
             </div>
           </Requirements>
 

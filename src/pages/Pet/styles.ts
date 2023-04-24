@@ -66,15 +66,8 @@ export const DogImages = styled.div`
     align-items: center;
     margin-top: 16px;
     div {
-      display: grid;
-      grid-template-columns: repeat(6, 80px);
+      display: flex;
       grid-gap: 1rem;
-
-      img {
-        border-radius: 15px;
-        height: 80px;
-        width: 80px;
-      }
     }
   }
 `
@@ -122,29 +115,14 @@ export const Map = styled.div`
   margin-top: 30px;
   background-color: var(--blue);
   border-radius: 20px;
+
   .map {
-    width: 100%;
-    height: 291px;
-    background-color: var(--white);
-    border: 1px solid var(--gray-light);
-    border-radius: 20px;
-    position: relative;
-    .arrow-map {
-      background-color: var(--blue);
-      padding: 15px 16px;
+      width: 100%;
+      height: 291px;
+      background-color: var(--white);
+      border: 1px solid var(--gray-light);
       border-radius: 20px;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      svg {
-        position: absolute;
-        top: 87px;
-        left: 50%;
-        height: 70px;
-        transform: translate(-50%, -50%);
-        width: 70px;
-        color: var(--blue);
-      }
+      position: relative;
     }
   }
   .footer-map {

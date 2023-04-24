@@ -10,21 +10,56 @@ import {
 } from './styles'
 import Logo from '../../assets/icons/logo.svg'
 import { AiOutlineArrowLeft, AiOutlineExclamationCircle } from 'react-icons/ai'
-import { useNavigate } from 'react-router-dom'
-import Dog1 from '../../assets/images/dog1.png'
+import { useLocation, useNavigate } from 'react-router-dom'
+
 import Dog2 from '../../assets/images/dog2.png'
 import { RiWhatsappFill, RiWhatsappLine } from 'react-icons/ri'
 import { SlEnergy } from 'react-icons/sl'
 import { TbMaximize } from 'react-icons/tb'
 import { FaEllipsisH } from 'react-icons/fa'
 import { MdOutlineArrowDropDown } from 'react-icons/md'
+import { useEffect, useState } from 'react'
+import { api } from '@/api/api'
+import { PetType } from '@/contexts'
 
+interface OrgType {
+  id: string
+  nome: string
+  address: string
+  cep: string
+  whatsappNumber: string
+}
+
+interface photoPetType {
+  id: string
+  image: string
+  petId: string
+  photo_url: string
+}
 export function Pet() {
+  const [pet, setPet] = useState<PetType>()
+  const [org, setOrg] = useState<OrgType>()
+  const [photos, setPhotos] = useState<photoPetType[]>()
   const navigate = useNavigate()
+  const location = useLocation()
+  const petId = location.state?.petId
 
   function handleGoBack() {
     navigate('/map')
   }
+
+  useEffect(() => {
+    api.get(`/pets/show/${petId}`).then((response) => {
+      setPet(response.data.pet)
+      setOrg(response.data.pet.org)
+    })
+  }, [petId])
+
+  useEffect(() => {
+    api.get(`/pets/gallery/${petId}`).then((response) => {
+      setPhotos(response.data.pet_gallery)
+    })
+  }, [petId])
 
   return (
     <Container>
@@ -37,25 +72,19 @@ export function Pet() {
       <h1 className="title">Seu novo amigo</h1>
       <main>
         <DogImages>
-          <img className="mainImage" src={Dog1} alt="" />
+          <img className="mainImage" src={pet?.photo_url} alt="" />
           <div>
             <div>
-              <img src={Dog2} alt="" />
-              <img src={Dog2} alt="" />
-              <img src={Dog2} alt="" />
-              <img src={Dog2} alt="" />
-              <img src={Dog2} alt="" />
-              <img src={Dog2} alt="" />
+              {photos?.map((photo) => (
+                <img key={photo.id} src={photo.photo_url} alt="dog image" />
+              ))}
             </div>
           </div>
         </DogImages>
         <ContainerDogDetails>
           <DescDog>
-            <p className="name">Alfredo</p>
-            <p className="description">
-              Eu sou um lindo doguinho de 3 anos, um jovem bricalhão que adora
-              fazer companhia, uma bagunça mas também ama uma soneca.
-            </p>
+            <p className="name">{pet?.name}</p>
+            <p className="description">{pet?.description}</p>
             <div className="list-details">
               <div className="card-detail">
                 <SlEnergy />
@@ -89,11 +118,11 @@ export function Pet() {
             <div>
               <div className="address">
                 <h1>Seu Cãopanheiro</h1>
-                <p>Rua do meio, 123 , Boa viagem, Recife - PE </p>
+                <p>{org?.address} </p>
               </div>
               <div className="contact">
                 <RiWhatsappFill />
-                <p className="phone">81 1234.4567</p>
+                <p className="phone">{org?.whatsappNumber}</p>
               </div>
             </div>
           </Location>

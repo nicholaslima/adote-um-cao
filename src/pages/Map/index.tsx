@@ -12,7 +12,7 @@ import {
   HeaderSelect,
   Display,
 } from './styles'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { api } from '@/api/api'
 import { useContextPets } from '@/contexts'
@@ -21,6 +21,7 @@ export function Map() {
   const [filter, setFilter] = useState('')
   const { pets, insertPets } = useContextPets()
   const location = useLocation()
+  const navigate = useNavigate()
   const city = location.state?.city
 
   let petsFiltered = pets.filter((pet) => {
@@ -49,6 +50,9 @@ export function Map() {
     petsFiltered = petsByType
   }
 
+  function handleGoToPet(petId: string) {
+    navigate('/pet', { state: { petId } })
+  }
   return (
     <Container>
       <Aside />
@@ -73,12 +77,9 @@ export function Map() {
         </Header>
         <Display>
           {petsFiltered.map((pet) => (
-            <Card
-              key={pet.id}
-              path={pet.photo_url}
-              type={pet.type}
-              name={pet.name}
-            />
+            <div key={pet.id} onClick={() => handleGoToPet(pet.id)}>
+              <Card path={pet.photo_url} type={pet.type} name={pet.name} />
+            </div>
           ))}
         </Display>
       </Content>

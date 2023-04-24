@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  height: 100%;
-  width: 100vw;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
   background-color: var(--background);
 
   aside {
@@ -42,7 +43,7 @@ export const Container = styled.div`
   main {
     width: 704px;
     margin: 40px auto;
-    margin-bottom: 32px;
+    margin-bottom: 0px;
     border-radius: 20px;
     background-color: var(--white);
   }

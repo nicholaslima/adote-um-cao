@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
 
-interface PetType {
+export interface PetType {
   id: string
   name: string
   description: string

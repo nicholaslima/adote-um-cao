@@ -1,5 +1,4 @@
 import {
-  ButtonContact,
   Container,
   ContainerDogDetails,
   DescDog,
@@ -30,6 +29,7 @@ interface OrgType {
   address: string
   cep: string
   whatsappNumber: string
+  numberFormated: string
 }
 
 interface photoPetType {
@@ -43,6 +43,7 @@ interface coordinatesType {
   latitude: number
   longitude: number
 }
+
 interface adoptionRequirementsType {
   id: string
   petId: string
@@ -53,6 +54,7 @@ export function Pet() {
   const [org, setOrg] = useState<OrgType>()
   const [photos, setPhotos] = useState<photoPetType[]>()
   const [mainPhoto, setMainPhoto] = useState('')
+  const [city, setCity] = useState('')
   const [coordinates, setCoordinates] = useState<coordinatesType>(
     {} as coordinatesType,
   )
@@ -68,8 +70,20 @@ export function Pet() {
 
   useEffect(() => {
     api.get(`/pets/show/${petId}`).then((response) => {
+      const number = response.data.pet.org.whatsappNumber.replace(/\D/g, '')
+
+      const numberFormated = number
+        .replace(/\D+/g, '')
+        .replace(/(\d{2})(\d{2})(\d{4})(\d{4})/, '+$1 ($2) $3-$4')
+
+      const org = {
+        ...response.data.pet.org,
+        whatsappNumber: number,
+        numberFormated,
+      }
+
+      setOrg(org)
       setPet(response.data.pet)
-      setOrg(response.data.pet.org)
       setMainPhoto(response.data.pet.photo_url)
     })
   }, [petId])
@@ -92,6 +106,7 @@ export function Pet() {
         latitude: Number(response.data.coordinates.latitude),
         longitude: Number(response.data.coordinates.longitude),
       }
+      setCity(response.data.city)
       setCoordinates(coordinatesInNumber)
     })
   }, [org])
@@ -201,11 +216,13 @@ export function Pet() {
             <div>
               <div className="address">
                 <h1>Seu Cãopanheiro</h1>
-                <p>{org?.address} </p>
+                <p>
+                  {org?.address}, {city}
+                </p>
               </div>
               <div className="contact">
                 <RiWhatsappFill />
-                <p className="phone">{org?.whatsappNumber}</p>
+                <p className="phone">{org?.numberFormated}</p>
               </div>
             </div>
           </Location>
@@ -222,10 +239,14 @@ export function Pet() {
             </div>
           </Requirements>
 
-          <ButtonContact>
+          <Link
+            to={`https://api.whatsapp.com/send?phone=${org?.whatsappNumber}`}
+            className="buttonContact"
+            target="_blank"
+          >
             <RiWhatsappLine />
             <p>Entrar em contato</p>
-          </ButtonContact>
+          </Link>
         </ContainerDogDetails>
       </main>
     </Container>

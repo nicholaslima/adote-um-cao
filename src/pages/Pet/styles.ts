@@ -47,6 +47,28 @@ export const Container = styled.div`
     border-radius: 20px;
     background-color: var(--white);
   }
+
+  .buttonContact {
+    background-color: var(--green);
+    border-radius: 20px;
+    width: 100%;
+    padding: 20px 0 20px 0;
+    border: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    svg {
+      color: var(--white);
+      width: 20px;
+      height: 20px;
+    }
+    p {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--white);
+    }
+  }
 `
 
 export const ContainerDogDetails = styled.div`
@@ -58,6 +80,7 @@ export const DogImages = styled.div`
     width: 100%;
     height: 336px;
     border-radius: 20px 20px 0 0;
+    border: 0;
   }
 
   div {
@@ -174,7 +197,7 @@ export const Location = styled.div`
 
     .contact {
       background-color: var(--gray-light-3);
-      width: 217px;
+      padding: 30px 13px;
       height: 54px;
       border-radius: 17px;
       display: flex;
@@ -234,26 +257,5 @@ export const Requirements = styled.div`
         font-weight: 600;
       }
     }
-  }
-`
-export const ButtonContact = styled.button`
-  background-color: var(--green);
-  border-radius: 20px;
-  width: 100%;
-  padding: 20px 0 20px 0;
-  border: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  svg {
-    color: var(--white);
-    width: 20px;
-    height: 20px;
-  }
-  p {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--white);
   }
 `

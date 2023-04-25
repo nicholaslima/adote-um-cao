@@ -9,7 +9,7 @@ import {
 } from './styles'
 import Logo from '../../assets/icons/logo.svg'
 import { AiOutlineArrowLeft, AiOutlineExclamationCircle } from 'react-icons/ai'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, redirect, useLocation, useNavigate } from 'react-router-dom'
 
 import { RiWhatsappFill, RiWhatsappLine } from 'react-icons/ri'
 import { SlEnergy } from 'react-icons/sl'
@@ -69,6 +69,10 @@ export function Pet() {
   }
 
   useEffect(() => {
+    if (!petId) {
+      navigate('/map')
+      return
+    }
     api.get(`/pets/show/${petId}`).then((response) => {
       const number = response.data.pet.org.whatsappNumber.replace(/\D/g, '')
 

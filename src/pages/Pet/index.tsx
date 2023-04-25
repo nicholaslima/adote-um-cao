@@ -16,7 +16,6 @@ import { RiWhatsappFill, RiWhatsappLine } from 'react-icons/ri'
 import { SlEnergy } from 'react-icons/sl'
 import { TbMaximize } from 'react-icons/tb'
 import { FaEllipsisH } from 'react-icons/fa'
-import { MdOutlineArrowDropDown } from 'react-icons/md'
 import { useEffect, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import L from 'leaflet'
@@ -53,6 +52,7 @@ export function Pet() {
   const [pet, setPet] = useState<PetType>()
   const [org, setOrg] = useState<OrgType>()
   const [photos, setPhotos] = useState<photoPetType[]>()
+  const [mainPhoto, setMainPhoto] = useState('')
   const [coordinates, setCoordinates] = useState<coordinatesType>(
     {} as coordinatesType,
   )
@@ -70,6 +70,7 @@ export function Pet() {
     api.get(`/pets/show/${petId}`).then((response) => {
       setPet(response.data.pet)
       setOrg(response.data.pet.org)
+      setMainPhoto(response.data.pet.photo_url)
     })
   }, [petId])
 
@@ -115,21 +116,24 @@ export function Pet() {
       <h1 className="title">Seu novo amigo</h1>
       <main>
         <DogImages>
-          <div
-            className="mainImage"
-            style={{
-              backgroundImage: `url(${pet?.photo_url})`,
-              backgroundSize: 'cover',
-              height: '336px',
-              width: '100%',
-              borderRadius: '20px 20px 0 0',
-            }}
-          />
+          {pet && (
+            <div
+              className="mainImage"
+              style={{
+                backgroundImage: `url(${mainPhoto})`,
+                backgroundSize: 'cover',
+                height: '336px',
+                width: '100%',
+                borderRadius: '20px 20px 0 0',
+              }}
+            />
+          )}
           <div>
             <div>
               {photos?.map((photo) => (
                 <div
                   key={photo.id}
+                  onClick={() => setMainPhoto(photo.photo_url)}
                   style={{
                     backgroundImage: `url(${photo.photo_url})`,
                     backgroundSize: 'cover',

@@ -78,6 +78,7 @@ export const FormContainer = styled.div`
         font-weight: 600;
       }
     }
+
     button {
       width: 100%;
       background-color: var(--blue);
@@ -97,7 +98,6 @@ export const FormContainer = styled.div`
         color: var(--blue);
         font-size: 20px;
         font-weight: 800;
-        text-decoration: underline;
       }
     }
   }

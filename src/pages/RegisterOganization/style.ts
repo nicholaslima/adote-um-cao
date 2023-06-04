@@ -102,3 +102,15 @@ export const FormContainer = styled.div`
     }
   }
 `
+export const AddressMap = styled.div`
+  width: 100%;
+  border-style: dashed dashed dashed solid;
+  border-width: 1px;
+  border-color: var(--blue);
+  border-radius: 20px;
+  margin-bottom: 30px;
+
+  .map-container {
+    height: 142px;
+  }
+`

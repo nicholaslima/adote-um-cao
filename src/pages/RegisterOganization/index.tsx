@@ -1,10 +1,12 @@
 import { useForm } from 'react-hook-form'
 import Logo from '../../assets/icons/logo.svg'
 import Dogs from '../../assets/images/dogs.png'
-import { BannerPets, Container, FormContainer } from './style'
+import { AddressMap, BannerPets, Container, FormContainer } from './style'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { api } from '@/api/api'
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { useEffect, useState } from 'react'
 
 interface organizationType {
   name: string
@@ -16,6 +18,11 @@ interface organizationType {
   passwordConfirm: string
 }
 
+interface coordinatesType {
+  latitude: number
+  longitude: number
+}
+
 const newOrganizationValidationSchema = zod
   .object({
     name: zod.string({ required_error: 'nome obrigatório' }),
@@ -24,7 +31,7 @@ const newOrganizationValidationSchema = zod
     }),
     cep: zod
       .string({ required_error: 'cep obrigatório' })
-      .length(8, { message: 'cep deve ter 8 digitos' }),
+      .max(8, { message: 'cep deve ter 8 digitos' }),
     address: zod.string({ required_error: 'endereço é obrigatório' }),
     whatsappNumber: zod.string({ required_error: 'whatsapp é obrigatório' }),
     password: zod
@@ -47,14 +54,18 @@ export function RegisterOrganization() {
       resolver: zodResolver(newOrganizationValidationSchema),
     })
 
-  console.log(formState.errors)
+  function FormatCep(cep: string) {
+    const cepFormated = `${cep.slice(0, 5)}-${cep.slice(-3)}`
+    return cepFormated
+  }
 
   async function HandleCreateNewOrganization(data: organizationType) {
     const newOrganization = {
       ...data,
       whatsappNumber: `+55${data.whatsappNumber}`,
-      cep: `${data.cep.slice(0, 5)}-${data.cep.slice(-3)}`,
+      cep: FormatCep(data.cep),
     }
+
     try {
       const resp = await api.post('/orgs', newOrganization)
       if (resp.status === 201) {
@@ -65,6 +76,30 @@ export function RegisterOrganization() {
     } catch (error: any) {
       console.log(error.response.data.error)
       console.log(error.response.data.status)
+    }
+  }
+
+  const [coordinates, setCoordinates] = useState<coordinatesType>(
+    {} as coordinatesType,
+  )
+
+  function SearchForCoordinates(cep: string) {
+    if (cep.length !== 8) {
+      return
+    }
+    const cepFormated = FormatCep(cep)
+
+    try {
+      api.get(`/location/coordinates/${cepFormated}`).then((response) => {
+        const coordinatesInNumber = {
+          latitude: Number(response.data.coordinates.latitude),
+          longitude: Number(response.data.coordinates.longitude),
+        }
+
+        setCoordinates(coordinatesInNumber)
+      })
+    } catch (Error: any) {
+      console.log(Error.response.data.error)
     }
   }
 
@@ -83,23 +118,51 @@ export function RegisterOrganization() {
 
         <form onSubmit={handleSubmit(HandleCreateNewOrganization)}>
           <div className="item-input">
-            <label htmlFor="name">nome</label>
+            <label htmlFor="name">Nome</label>
             <input {...register('name')} type="text" name="name" />
           </div>
           <div className="item-input">
             <label htmlFor="email">Email</label>
             <input {...register('email')} type="text" name="email" />
           </div>
-          <div className="item-input">
-            <label htmlFor="cep">CEP</label>
-            <input {...register('cep')} type="number" name="cep" />
-          </div>
+
           <div className="item-input">
             <label htmlFor="address">Endereço</label>
             <input {...register('address')} type="text" name="address" />
           </div>
 
-          <div className="map"></div>
+          <div className="item-input">
+            <label htmlFor="cep">CEP</label>
+            <input
+              {...register('cep')}
+              onChange={(e) => SearchForCoordinates(e.target.value)}
+              placeholder="12345123"
+              type="number"
+              name="cep"
+            />
+          </div>
+
+          <AddressMap>
+            {coordinates.latitude && (
+              <MapContainer
+                center={[coordinates.latitude, coordinates.longitude]}
+                zoom={13}
+                scrollWheelZoom={false}
+                className="map-container"
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+
+                <Marker
+                  position={[coordinates.latitude, coordinates.longitude]}
+                >
+                  <Popup>localização do seu endereço</Popup>
+                </Marker>
+              </MapContainer>
+            )}
+          </AddressMap>
 
           <div className="item-input">
             <label htmlFor="whatsappNumber">whatsapp</label>
